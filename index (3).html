@@ -1,0 +1,347 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CSBHTAC Partnership Readiness Compass (draft prototype)</title>
+<style>
+  :root{
+    --ink:#1f2a28; --muted:#5f6f6b; --faint:#8aa09a;
+    --teal:#0f6e56; --teal-mid:#1d9e75; --teal-soft:#e1f5ee;
+    --amber:#b97515; --amber-soft:#faeeda;
+    --line:#dce6e3; --card:#ffffff; --bg:#f6faf8;
+  }
+  *{box-sizing:border-box; margin:0; padding:0;}
+  body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif; background:var(--bg); color:var(--ink); line-height:1.6;}
+  .wrap{max-width:680px; margin:0 auto; padding:40px 20px 60px;}
+  .orn{color:var(--teal-mid); letter-spacing:6px; text-align:center; margin-bottom:10px;}
+  h1{font-size:26px; font-weight:600; text-align:center;}
+  .sub{text-align:center; color:var(--muted); font-size:15px; margin-top:8px;}
+  .tag{display:inline-block; font-size:12px; background:var(--amber-soft); color:var(--amber); padding:3px 12px; border-radius:999px; margin-top:14px;}
+  .center{text-align:center;}
+  .card{background:var(--card); border:1px solid var(--line); border-radius:14px; padding:26px 28px; margin-top:24px;}
+  .btn{display:inline-block; font-size:15px; font-weight:500; color:#fff; background:var(--teal); border:none; border-radius:10px; padding:12px 26px; cursor:pointer; margin-top:18px;}
+  .btn.ghost{background:transparent; color:var(--teal); border:1px solid var(--line);}
+  .btn:hover{opacity:.92;}
+  .opt{display:block; width:100%; text-align:left; font-size:15px; background:#fff; border:1px solid var(--line); border-radius:10px; padding:13px 16px; margin-top:10px; cursor:pointer; color:var(--ink);}
+  .opt:hover{border-color:var(--teal-mid); background:var(--teal-soft);}
+  .progress-track{height:6px; background:var(--line); border-radius:3px; margin:18px 0 6px;}
+  .progress-fill{height:6px; background:var(--teal-mid); border-radius:3px; transition:width .25s;}
+  .meta{font-size:13px; color:var(--faint); display:flex; justify-content:space-between;}
+  .domain{font-size:12px; color:var(--teal); text-transform:uppercase; letter-spacing:1px; margin-bottom:6px;}
+  .q{font-size:17px; font-weight:500; line-height:1.5;}
+  .back{background:none; border:none; color:var(--faint); font-size:13px; cursor:pointer; margin-top:14px;}
+  .bar-row{display:grid; grid-template-columns:170px 1fr 90px; gap:10px; align-items:center; font-size:13.5px; margin-top:10px;}
+  .bar-track{height:8px; background:var(--bg); border:1px solid var(--line); border-radius:4px;}
+  .bar-fill{height:100%; border-radius:4px; background:var(--teal-mid);}
+  .chip{font-size:12px; padding:2px 8px; border-radius:999px; text-align:center;}
+  .chip.lead{background:var(--teal-soft); color:var(--teal);}
+  .chip.dev{background:#eaf3de; color:#3b6d11;}
+  .chip.est{background:var(--amber-soft); color:var(--amber);}
+  .duo{display:grid; grid-template-columns:1fr 1fr; gap:12px; margin-top:16px;}
+  @media(max-width:560px){.duo{grid-template-columns:1fr;} .bar-row{grid-template-columns:120px 1fr 84px;}}
+  .mini{background:var(--bg); border-radius:10px; padding:14px 16px; font-size:13.5px;}
+  .mini h4{font-size:13px; margin-bottom:6px;}
+  .mini.strength h4{color:var(--teal);}
+  .mini.growth h4{color:var(--amber);}
+  .mini p{color:var(--muted); line-height:1.55;}
+  .note{font-size:12.5px; color:var(--faint); margin-top:16px; line-height:1.5;}
+  table{width:100%; border-collapse:collapse; font-size:13px; margin-top:12px;}
+  th{font-weight:500; color:var(--muted); text-align:left; padding:8px 6px; border-bottom:1px solid var(--line); font-size:12px;}
+  td{padding:9px 6px; border-bottom:1px solid var(--line);}
+  .hidden{display:none;}
+  h2{font-size:19px; font-weight:600;}
+  h3{font-size:15px; font-weight:600; margin-top:20px;}
+  .compass{font-size:13.5px; background:var(--teal-soft); color:var(--teal); border-radius:10px; padding:12px 16px; margin-top:16px;}
+  .field{display:block; width:100%; font-size:14px; border:1px solid var(--line); border-radius:8px; padding:10px 12px; margin-top:8px; background:#fff; color:var(--ink); font-family:inherit;}
+  footer{text-align:center; font-size:12px; color:var(--faint); margin-top:36px; line-height:1.6;}
+  @media print{
+    body{background:#fff;}
+    .no-print{display:none !important;}
+    .card{border:none; padding:6px 0;}
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="orn">&#10022; &#10022; &#10022;</div>
+  <h1>Partnership Readiness Compass</h1>
+  <p class="sub">Carolinas School Behavioral Health TA Center (CSBHTAC)</p>
+
+  <div id="screen-start" class="card">
+    <h2>Where is your system on the path to school partnership?</h2>
+    <p style="margin-top:10px; color:var(--muted); font-size:15px;">A brief self-assessment for health systems building partnerships with schools. You will respond to a short set of statements about your system's current partnership practices, and receive an instant readiness profile that highlights strengths, growth opportunities, and where coaching support can help.</p>
+    <p style="margin-top:10px; color:var(--muted); font-size:15px;">This is not a pass or fail test. Every system starts somewhere, and the profile simply shows where support will be most useful.</p>
+    <div class="center"><button class="btn" onclick="start()">Begin</button></div>
+  </div>
+
+  <div id="screen-quiz" class="card hidden">
+    <div class="meta"><span id="qcount"></span><span id="qpct"></span></div>
+    <div class="progress-track"><div class="progress-fill" id="pfill" style="width:0%"></div></div>
+    <p class="domain" id="qdomain"></p>
+    <p class="q" id="qtext"></p>
+    <div id="opts"></div>
+    <button class="back" id="backbtn" onclick="goBack()">&#8592; Back</button>
+  </div>
+
+  <div id="screen-results" class="card hidden">
+    <h2>Your readiness profile</h2>
+    <p style="color:var(--muted); font-size:14px; margin-top:6px;" id="prong-note"></p>
+    <div id="bars" style="margin-top:14px;"></div>
+    <div class="duo">
+      <div class="mini strength"><h4>&#10003; Partnership strengths</h4><p id="strengths"></p></div>
+      <div class="mini growth"><h4>&#127793; Growth opportunities</h4><p id="growth"></p></div>
+    </div>
+    <div class="compass" id="tastart"></div>
+    <p class="note">Levels: Establishing (getting started), Developing (partial systems in place), Leading (ready to model for others). Readiness is dynamic; profiles are revisited with your TA coach as the partnership grows.</p>
+    <div id="share-block" class="no-print" style="margin-top:18px; border-top:1px solid var(--line); padding-top:14px;">
+      <p style="font-size:14px; font-weight:500;">Share your profile with the CSBHTAC team (optional)</p>
+      <p class="note" style="margin-top:4px;">Shared profiles are used only to plan coaching and technical assistance. They are never used for selection.</p>
+      <input class="field" id="f-system" placeholder="Health system or organization">
+      <input class="field" id="f-name" placeholder="Your name">
+      <select class="field" id="f-role">
+        <option value="">Your role...</option>
+        <option>Health system leader</option>
+        <option>Behavioral health clinician</option>
+        <option>District leader</option>
+        <option>School leader</option>
+        <option>Other</option>
+      </select>
+      <div class="center">
+        <button class="btn" id="submit-btn" onclick="submitProfile()">Submit to CSBHTAC</button>
+      </div>
+      <p class="note center" id="submit-status" style="text-align:center;"></p>
+    </div>
+    <div class="center no-print">
+      <button class="btn ghost" onclick="copyResults(this)">Copy results</button>
+      <button class="btn ghost" onclick="window.print()">Save profile (PDF)</button>
+    </div>
+    <div class="center no-print">
+      <button class="btn ghost" onclick="location.reload()">Retake</button>
+      <button class="btn" onclick="showCoach()">View TA coach dashboard &#8594;</button>
+    </div>
+  </div>
+
+  <div id="screen-coach" class="card hidden">
+    <h2>TA coach view: cohort overview</h2>
+    <p style="color:var(--muted); font-size:14px; margin-top:6px;">What the CSBHTAC coaching team sees across a cohort (sample cohort for illustration). Profiles update as systems reassess, so growth is visible over time.</p>
+    <table>
+      <tr><th>Health system</th><th>Leadership</th><th>Data sharing</th><th>Operations</th><th>TA focus</th></tr>
+      <tr><td>Palmetto Children's Health</td><td><span class="chip lead">Leading</span></td><td><span class="chip est">Establishing</span></td><td><span class="chip dev">Developing</span></td><td>Data agreements</td></tr>
+      <tr><td>Blue Ridge Regional</td><td><span class="chip dev">Developing</span></td><td><span class="chip dev">Developing</span></td><td><span class="chip lead">Leading</span></td><td>Executive sponsor</td></tr>
+      <tr><td>Coastal Care Network</td><td><span class="chip est">Establishing</span></td><td><span class="chip est">Establishing</span></td><td><span class="chip est">Establishing</span></td><td>Orientation series</td></tr>
+      <tr><td>Sandhills Pediatric Alliance</td><td><span class="chip lead">Leading</span></td><td><span class="chip lead">Leading</span></td><td><span class="chip dev">Developing</span></td><td>Prong 2 planning</td></tr>
+    </table>
+    <div class="center no-print">
+      <button class="btn ghost" onclick="copyCohort(this)">Copy cohort summary</button>
+      <button class="btn ghost" onclick="window.print()">Save dashboard (PDF)</button>
+    </div>
+    <div class="center no-print"><button class="btn ghost" onclick="backToResults()">&#8592; Back to profile</button></div>
+  </div>
+
+  <footer>&#10022;<br>CSBHTAC concept preview, in development with the readiness team.<br>Items adapted from the School-Friendly Health System checklist and CSBHTAC readiness tools.</footer>
+</div>
+
+<script>
+const DOMAINS = {
+  lead: "Leadership and governance",
+  data: "Partnership clarity and data sharing",
+  map:  "Resource mapping and service design",
+  ops:  "Operations, staffing, and technology",
+  cqi:  "Awareness and continuous improvement"
+};
+
+const BRANCH = {
+  domain: "Getting started",
+  text: "Does your health system currently have a formal partnership with a school district?",
+  options: ["Yes, we have an established district partnership", "We have informal school connections", "Not yet"]
+};
+
+const P1 = [
+  {d:"lead", t:"A named executive sponsor and an operational lead exist on both the school and health system sides, each with protected time for this work."},
+  {d:"lead", t:"A written partnership agreement (MOU or equivalent) defines roles, response expectations, and how urgent situations are escalated."},
+  {d:"data", t:"A defined process exists for how a school concern becomes a healthcare contact: who initiates, who calls families, who schedules, and who follows up."},
+  {d:"data", t:"Schools and healthcare can securely communicate about shared students within FERPA and HIPAA boundaries, with an agreed method and response timeframe."},
+  {d:"map",  t:"A joint resource map shows existing school supports, healthcare services, and how students currently move through them."},
+  {d:"ops",  t:"The health system has capacity for coordination and collaboration with schools, not only scheduled clinical visits."},
+  {d:"ops",  t:"A standing coordination structure exists: regular operational meetings and identified points of contact on both sides."},
+  {d:"ops",  t:"Technology and space needs are solved: communication platform, scheduling process, private meeting space, and backup plans."},
+  {d:"cqi",  t:"A shared outreach and awareness plan tells staff and families what the partnership is and how to access services."},
+  {d:"cqi",  t:"The partners track a small set of shared measures and meet regularly to review and improve the process."}
+];
+
+const P2 = [
+  {d:"lead", t:"Leadership is prepared to sign a written commitment to the project, including named champions who have supported similar efforts."},
+  {d:"ops",  t:"We can commit behavioral health clinicians with regular weekly time in each partner school, plus protected time for team collaboration."},
+  {d:"cqi",  t:"Frontline clinicians see this project as enhancing their work and fitting their existing workflows and values."}
+];
+
+const RESP = ["In place", "In progress", "Not yet"];
+const SCORE = [2, 1, 0];
+
+let items = [], answers = [], idx = -1, hasPartner = false;
+
+function start(){
+  document.getElementById("screen-start").classList.add("hidden");
+  document.getElementById("screen-quiz").classList.remove("hidden");
+  idx = -1;
+  renderBranch();
+}
+
+function renderBranch(){
+  document.getElementById("qdomain").textContent = BRANCH.domain;
+  document.getElementById("qtext").textContent = BRANCH.text;
+  document.getElementById("qcount").textContent = "Getting started";
+  document.getElementById("qpct").textContent = "";
+  document.getElementById("pfill").style.width = "4%";
+  document.getElementById("backbtn").style.visibility = "hidden";
+  const box = document.getElementById("opts");
+  box.innerHTML = "";
+  BRANCH.options.forEach((o, i) => {
+    const b = document.createElement("button");
+    b.className = "opt"; b.textContent = o;
+    b.onclick = () => { hasPartner = (i === 0); items = hasPartner ? P1.concat(P2) : P1.slice(); answers = []; idx = 0; renderQ(); };
+    box.appendChild(b);
+  });
+}
+
+function renderQ(){
+  if (idx >= items.length) { return showResults(); }
+  const q = items[idx];
+  document.getElementById("qdomain").textContent = DOMAINS[q.d] + (idx >= P1.length ? " (partnership items)" : "");
+  document.getElementById("qtext").textContent = q.t;
+  document.getElementById("qcount").textContent = "Item " + (idx+1) + " of " + items.length;
+  const pct = Math.round(((idx) / items.length) * 100);
+  document.getElementById("qpct").textContent = pct + "%";
+  document.getElementById("pfill").style.width = Math.max(pct, 6) + "%";
+  document.getElementById("backbtn").style.visibility = "visible";
+  const box = document.getElementById("opts");
+  box.innerHTML = "";
+  RESP.forEach((r, i) => {
+    const b = document.createElement("button");
+    b.className = "opt"; b.textContent = r;
+    b.onclick = () => { answers[idx] = SCORE[i]; idx++; renderQ(); };
+    box.appendChild(b);
+  });
+}
+
+function goBack(){
+  if (idx > 0) { idx--; renderQ(); }
+  else { idx = -1; renderBranch(); }
+}
+
+function levelOf(avg){
+  if (avg >= 1.6) return ["Leading", "lead"];
+  if (avg >= 0.8) return ["Developing", "dev"];
+  return ["Establishing", "est"];
+}
+
+let profileLines = [];
+const ENDPOINT = "https://script.google.com/macros/s/AKfycbznnSsw8BJznbYrctgSwzt4AFLEsOU0EUtjlfohneeuaBLw_zXveAFfXYH7RFj_zAXr/exec";
+let levelByDom = {}, taStartName = "";
+
+function showResults(){
+  document.getElementById("screen-quiz").classList.add("hidden");
+  document.getElementById("screen-results").classList.remove("hidden");
+  const byDom = {};
+  Object.keys(DOMAINS).forEach(k => byDom[k] = []);
+  items.forEach((q, i) => byDom[q.d].push({score: answers[i] ?? 0, text: q.t}));
+  const barsBox = document.getElementById("bars");
+  barsBox.innerHTML = "";
+  profileLines = ["Partnership Readiness Compass (CSBHTAC draft prototype)", ""];
+  let lowest = null, strengths = [], growth = [];
+  Object.keys(DOMAINS).forEach(k => {
+    const list = byDom[k];
+    if (!list.length) return;
+    const avg = list.reduce((s, x) => s + x.score, 0) / list.length;
+    const [lvl, cls] = levelOf(avg);
+    profileLines.push(DOMAINS[k] + ": " + lvl);
+    levelByDom[k] = lvl;
+    if (lowest === null || avg < lowest.avg) lowest = {k, avg};
+    list.forEach(x => { if (x.score === 2) strengths.push(x); if (x.score === 0) growth.push(x); });
+    const row = document.createElement("div");
+    row.className = "bar-row";
+    row.innerHTML = "<span>" + DOMAINS[k] + "</span>" +
+      "<div class='bar-track'><div class='bar-fill' style='width:" + Math.round(avg/2*100) + "%; background:" + (avg < 0.8 ? "#ef9f27" : "#1d9e75") + "'></div></div>" +
+      "<span class='chip " + cls + "'>" + lvl + "</span>";
+    barsBox.appendChild(row);
+  });
+  document.getElementById("strengths").textContent = strengths.length
+    ? summarize(strengths) : "Every area shows room to grow, which is a normal starting point.";
+  document.getElementById("growth").textContent = growth.length
+    ? summarize(growth) : "No gaps reported. TA can focus on sustaining and modeling for other systems.";
+  document.getElementById("tastart").innerHTML = "&#10022; Suggested TA starting point: <b>" + DOMAINS[lowest.k].toLowerCase() + "</b>. Your CSBHTAC coach will use this profile to plan first steps together.";
+  document.getElementById("prong-note").textContent = hasPartner
+    ? "Baseline and partnership items completed. This profile informs joint planning with your district partner."
+    : "Baseline profile completed. Partnership items unlock once a district relationship is established, and your earlier answers carry forward so nothing is asked twice.";
+  taStartName = DOMAINS[lowest.k];
+  profileLines.push("", "Suggested TA starting point: " + DOMAINS[lowest.k],
+    "", "Readiness is a growth profile, not a pass or fail score. Next step: review with your CSBHTAC coach.");
+}
+
+function submitProfile(){
+  const system = document.getElementById("f-system").value.trim();
+  const status = document.getElementById("submit-status");
+  if (!system) { status.textContent = "Please enter your health system or organization name."; return; }
+  const btn = document.getElementById("submit-btn");
+  btn.disabled = true; status.textContent = "Submitting...";
+  const params = new URLSearchParams({
+    system: system,
+    respondent: document.getElementById("f-name").value.trim(),
+    role: document.getElementById("f-role").value,
+    prong: hasPartner ? "Prong 1 + Prong 2" : "Prong 1 baseline",
+    lead: levelByDom.lead || "", data: levelByDom.data || "", map: levelByDom.map || "",
+    ops: levelByDom.ops || "", cqi: levelByDom.cqi || "",
+    tastart: taStartName,
+    answers: JSON.stringify(answers)
+  });
+  fetch(ENDPOINT, {method: "POST", body: params})
+    .then(() => { status.textContent = "Submitted. Thank you! Your CSBHTAC coach will follow up."; })
+    .catch(() => { fetch(ENDPOINT, {method: "POST", body: params, mode: "no-cors"})
+      .then(() => { status.textContent = "Submitted. Thank you! Your CSBHTAC coach will follow up."; })
+      .catch(() => { status.textContent = "Could not submit. Please check your connection and try again."; btn.disabled = false; }); });
+}
+
+function copyResults(btn){
+  const text = profileLines.join("\n");
+  const done = () => { const old = btn.textContent; btn.textContent = "Copied ✓"; setTimeout(() => btn.textContent = old, 1600); };
+  if (navigator.clipboard && navigator.clipboard.writeText) {
+    navigator.clipboard.writeText(text).then(done).catch(() => fallbackCopy(text, done));
+  } else { fallbackCopy(text, done); }
+}
+function fallbackCopy(text, done){
+  const ta = document.createElement("textarea");
+  ta.value = text; document.body.appendChild(ta); ta.select();
+  try { document.execCommand("copy"); } catch(e) {}
+  document.body.removeChild(ta); done();
+}
+function copyCohort(btn){
+  const lines = ["CSBHTAC TA cohort overview (draft prototype, sample cohort for illustration)", ""];
+  document.querySelectorAll("#screen-coach table tr").forEach((tr, i) => {
+    const cells = Array.from(tr.children).map(td => td.textContent.trim());
+    if (i === 0) return;
+    lines.push(cells[0] + " | Leadership: " + cells[1] + " | Data sharing: " + cells[2] + " | Operations: " + cells[3] + " | TA focus: " + cells[4]);
+  });
+  const text = lines.join("\n");
+  const done = () => { const old = btn.textContent; btn.textContent = "Copied ✓"; setTimeout(() => btn.textContent = old, 1600); };
+  if (navigator.clipboard && navigator.clipboard.writeText) {
+    navigator.clipboard.writeText(text).then(done).catch(() => fallbackCopy(text, done));
+  } else { fallbackCopy(text, done); }
+}
+
+function summarize(list){
+  const firsts = list.slice(0, 2).map(x => x.text.split(":")[0].split(",")[0]);
+  return firsts.join(". ") + (list.length > 2 ? ". And " + (list.length - 2) + " more." : ".");
+}
+
+function showCoach(){
+  document.getElementById("screen-results").classList.add("hidden");
+  document.getElementById("screen-coach").classList.remove("hidden");
+}
+function backToResults(){
+  document.getElementById("screen-coach").classList.add("hidden");
+  document.getElementById("screen-results").classList.remove("hidden");
+}
+</script>
+</body>
+</html>
