@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>CSBHTAC Partnership Readiness Compass (draft prototype)</title>
+<title>CSBHTAC Partnership Readiness Compass</title>
 <style>
   :root{
     --ink:#1f2a28; --muted:#5f6f6b; --faint:#8aa09a;
@@ -120,6 +120,7 @@
       <button class="btn ghost" onclick="location.reload()">Retake</button>
       <button class="btn" onclick="showCoach()">View TA coach dashboard &#8594;</button>
     </div>
+    <p class="note" style="text-align:center; margin-top:14px;">Questions? Contact us via email at <a href="mailto:CarolinasSBH@sc.edu" style="color:var(--teal);">CarolinasSBH@sc.edu</a>.</p>
   </div>
 
   <div id="screen-coach" class="card hidden">
@@ -248,7 +249,7 @@ function showResults(){
   items.forEach((q, i) => byDom[q.d].push({score: answers[i] ?? 0, text: q.t}));
   const barsBox = document.getElementById("bars");
   barsBox.innerHTML = "";
-  profileLines = ["Partnership Readiness Compass (CSBHTAC draft prototype)", ""];
+  profileLines = ["Partnership Readiness Compass (CSBHTAC)", ""];
   let lowest = null, strengths = [], growth = [];
   Object.keys(DOMAINS).forEach(k => {
     const list = byDom[k];
@@ -276,7 +277,8 @@ function showResults(){
     : "Baseline profile completed. Partnership items unlock once a district relationship is established, and your earlier answers carry forward so nothing is asked twice.";
   taStartName = DOMAINS[lowest.k];
   profileLines.push("", "Suggested TA starting point: " + DOMAINS[lowest.k],
-    "", "Readiness is a growth profile, not a pass or fail score. Next step: review with your CSBHTAC coach.");
+    "", "Readiness is a growth profile, not a pass or fail score. Next step: review with your CSBHTAC coach.",
+    "", "Questions? Contact us via email at CarolinasSBH@sc.edu.");
 }
 
 function submitProfile(){
@@ -316,7 +318,7 @@ function fallbackCopy(text, done){
   document.body.removeChild(ta); done();
 }
 function copyCohort(btn){
-  const lines = ["CSBHTAC TA cohort overview (draft prototype, sample cohort for illustration)", ""];
+  const lines = ["CSBHTAC TA cohort overview (sample cohort for illustration)", ""];
   document.querySelectorAll("#screen-coach table tr").forEach((tr, i) => {
     const cells = Array.from(tr.children).map(td => td.textContent.trim());
     if (i === 0) return;
