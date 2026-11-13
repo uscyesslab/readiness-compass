@@ -72,6 +72,14 @@
     <h2>Where is your system on the path to school partnership?</h2>
     <p style="margin-top:10px; color:var(--muted); font-size:15px;">The Partnership Readiness Compass is a brief tool for health systems building partnerships with schools. You will respond to a short set of statements about your system's current partnership practices, and receive an instant readiness profile that highlights strengths, growth opportunities, and where coaching support can help.</p>
     <p style="margin-top:10px; color:var(--muted); font-size:15px;">This is not a pass or fail test. Every system starts somewhere, and the profile simply shows where support will be most useful.</p>
+    <div id="start-block" style="margin-top:14px; border-top:1px solid var(--line); padding-top:12px;">
+      <p style="font-size:14px; font-weight:500;">Before you begin, tell us who is completing the Compass</p>
+      <input class="field" id="s-org" placeholder="Health system or organization">
+      <input class="field" id="s-name" placeholder="Your name">
+      <input class="field" id="s-email" type="email" placeholder="Email">
+      <p class="note" style="margin-top:4px;">Your contact information lets the CSBHTAC team follow up and offer support. Your full profile is shared with the team only if you choose to submit it at the end.</p>
+      <p class="note center" id="start-status" style="text-align:center;"></p>
+    </div>
     <div class="center"><button class="btn" onclick="start()">Begin</button></div>
   </div>
 
@@ -182,7 +190,22 @@ const SCORE = [2, 1, 0];
 
 let items = [], answers = [], idx = -1, hasPartner = false;
 
+let contact = {org: "", name: "", email: ""};
+function logEvent(event, extra){
+  const params = new URLSearchParams(Object.assign({event: event, system: contact.org, respondent: contact.name, email: contact.email}, extra || {}));
+  try { fetch(ENDPOINT, {method: "POST", body: params, mode: "no-cors", keepalive: true}).catch(() => {}); } catch (e) {}
+}
 function start(){
+  contact = {
+    org: document.getElementById("s-org").value.trim(),
+    name: document.getElementById("s-name").value.trim(),
+    email: document.getElementById("s-email").value.trim()
+  };
+  const st = document.getElementById("start-status");
+  if (!contact.org || !contact.name || !contact.email) { st.textContent = "Please enter your organization, name, and email to begin."; return; }
+  if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(contact.email)) { st.textContent = "Please enter a valid email address."; return; }
+  st.textContent = "";
+  logEvent("start");
   document.getElementById("screen-start").classList.add("hidden");
   document.getElementById("screen-quiz").classList.remove("hidden");
   idx = -1;
@@ -276,6 +299,10 @@ function showResults(){
     ? "Baseline and partnership items completed. This profile informs joint planning with your district partner."
     : "Baseline profile completed. Partnership items unlock once a district relationship is established, and your earlier answers carry forward so nothing is asked twice.";
   taStartName = DOMAINS[lowest.k];
+  logEvent("completed", {prong: hasPartner ? "Prong 1 + Prong 2" : "Prong 1 baseline",
+    lead: levelByDom.lead || "", data: levelByDom.data || "", map: levelByDom.map || "", ops: levelByDom.ops || "", cqi: levelByDom.cqi || "", tastart: taStartName});
+  document.getElementById("f-system").value = contact.org;
+  document.getElementById("f-name").value = contact.name;
   profileLines.push("", "Suggested TA starting point: " + DOMAINS[lowest.k],
     "", "Readiness is a growth profile, not a pass or fail score. Next step: review with your CSBHTAC coach.",
     "", "Questions? Contact us via email at CarolinasSBH@sc.edu.");
@@ -288,8 +315,10 @@ function submitProfile(){
   const btn = document.getElementById("submit-btn");
   btn.disabled = true; status.textContent = "Submitting...";
   const params = new URLSearchParams({
+    event: "submit",
     system: system,
     respondent: document.getElementById("f-name").value.trim(),
+    email: contact.email,
     role: document.getElementById("f-role").value,
     prong: hasPartner ? "Prong 1 + Prong 2" : "Prong 1 baseline",
     lead: levelByDom.lead || "", data: levelByDom.data || "", map: levelByDom.map || "",
